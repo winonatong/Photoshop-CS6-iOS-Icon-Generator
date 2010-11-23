@@ -73,7 +73,7 @@ if (iTunesArtwork !== null) { // clicking "Cancel" returns null
     {"name": "Icon-Small",    "size":29},
     {"name": "Icon-Small@2x", "size":58},
     {"name": "Icon-Small-50", "size":50}
-  ]
+  ];
 
   var icon;
   for (i = 0; i < icons.length; i++) {
