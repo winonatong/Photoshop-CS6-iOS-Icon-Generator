@@ -122,8 +122,16 @@ try
       icon = icons[i];
       doc.resizeImage(icon.size, icon.size, // width, height
                       null, ResampleMethod.BICUBICSHARPER);
-      doc.exportDocument(new File(destFolder + "/" + icon.name + ".png"), ExportType.SAVEFORWEB, sfw);
-      // doc.saveAs(new File(doc.path + "/" + icon.name + ".png"), new PNGSaveOptions());
+
+      var destFileName = icon.name + ".png";
+
+      if ((icon.name == "iTunesArtwork@2x") || (icon.name == "iTunesArtwork"))
+      {
+        // iTunesArtwork files don't have an extension
+        destFileName = icon.name;
+      }
+
+      doc.exportDocument(new File(destFolder + "/" + destFileName), ExportType.SAVEFORWEB, sfw);
       doc.activeHistoryState = startState; // undo resize
     }
 
