@@ -66,6 +66,10 @@ try
       throw "Something is wrong with the file.  Make sure it's a valid PNG file.";
     }
 
+    var startState = doc.activeHistoryState;       // save for undo
+    var initialPrefs = app.preferences.rulerUnits; // will restore at end
+    app.preferences.rulerUnits = Units.PIXELS;     // use pixels
+
     if (doc.width != doc.height)
     {
         throw "Image is not square";
@@ -91,10 +95,6 @@ try
       // User canceled, just exit
       throw "";
     }
-
-    var startState = doc.activeHistoryState;       // save for undo
-    var initialPrefs = app.preferences.rulerUnits; // will restore at end
-    app.preferences.rulerUnits = Units.PIXELS;     // use pixels
 
     // Save icons in PNG using Save for Web.
     var sfw = new ExportOptionsSaveForWeb();
