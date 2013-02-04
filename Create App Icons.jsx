@@ -1,7 +1,7 @@
 // Photoshop Script to Create iPhone Icons from iTunesArtwork
 //
 // WARNING!!! In the rare case that there are name collisions, this script will
-// overwrite (delete perminently) files in the same folder in which the selected
+// overwrite (delete permanently) files in the same folder in which the selected
 // iTunesArtwork file is located. Therefore, to be safe, before running the
 // script, it's best to make sure the selected iTuensArtwork file is the only
 // file in its containing folder.
@@ -52,102 +52,130 @@
 // Turn debugger on. 0 is off.
 // $.level = 1;
 
-try
-{
-  // Prompt user to select iTunesArtwork file. Clicking "Cancel" returns null.
-  var iTunesArtwork = File.openDialog("Select a sqaure PNG file that is at least 1024x1024.", "*.png", false);
+var dlg = new Window("dialog{text:'Create App Icons',bounds:[100,100,500,250],\
+warningText:StaticText{bounds:[25,80,380,200] , text:'* If the image is vector-based it can be smaller than 1024x1024, otherwise it is a really good idea for the file to be at least 1024x1024 pixels in size.' ,properties:{multiline:true}},\
+dropDownLabel:StaticText{bounds:[17,16,200,38] , text:'Create icons for' ,properties:{multiline:true}},\
+};");
 
-  if (iTunesArtwork !== null) 
-  { 
-    var doc = open(iTunesArtwork, OpenDocumentType.PNG);
-    
-    if (doc == null)
-    {
-      throw "Something is wrong with the file.  Make sure it's a valid PNG file.";
-    }
+dlg.cancelBtn = dlg.add('button', [255,40,375,63], 'Abort', {name:'cancel'});
+dlg.selectImgBtn = dlg.add('button', [255,13,375,35], 'Select an image*', {name:'ok'});
 
-    var startState = doc.activeHistoryState;       // save for undo
-    var initialPrefs = app.preferences.rulerUnits; // will restore at end
-    app.preferences.rulerUnits = Units.PIXELS;     // use pixels
+var platformOptions = []; 
+platformOptions[0] = "iOS App"; 
+platformOptions[1] = "Mac App"; 
 
-    if (doc.width != doc.height)
-    {
-        throw "Image is not square";
-    }
-    else if ((doc.width < 1024) && (doc.height < 1024))
-    {
-        throw "Image is too small!  Image must be at least 1024x1024 pixels.";
-    }
-    else if (doc.width < 1024)
-    {
-        throw "Image width is too small!  Image width must be at least 1024 pixels.";
-    }
-    else if (doc.height < 1024)
-    {
-        throw "Image height is too small!  Image height must be at least 1024 pixels.";
-    }
-    
-    // Folder selection dialog
-    var destFolder = Folder.selectDialog( "Choose an output folder");
+dlg.dropdownlist = dlg.add("dropdownlist", [130,13,220,35]);
 
-    if (destFolder == null)
-    {
-      // User canceled, just exit
-      throw "";
-    }
-
-    // Save icons in PNG using Save for Web.
-    var sfw = new ExportOptionsSaveForWeb();
-    sfw.format = SaveDocumentType.PNG;
-    sfw.PNG8 = false; // use PNG-24
-    sfw.transparency = false;
-    doc.info = null;  // delete metadata
-    
-    var icons = [
-      {"name": "iTunesArtwork@2x", "size":1024},
-      {"name": "iTunesArtwork",    "size":512},
-      {"name": "Icon",             "size":57},
-      {"name": "Icon@2x",          "size":114},
-      {"name": "Icon-72",          "size":72},
-      {"name": "Icon-72@2x",       "size":144},
-      {"name": "Icon-Small",       "size":29},
-      {"name": "Icon-Small@2x",    "size":58},
-      {"name": "Icon-Small-50",    "size":50},
-      {"name": "Icon-Small-50@2x", "size":100}
-    ];
-
-    var icon;
-    for (i = 0; i < icons.length; i++) 
-    {
-      icon = icons[i];
-      doc.resizeImage(icon.size, icon.size, // width, height
-                      null, ResampleMethod.BICUBICSHARPER);
-
-      var destFileName = icon.name + ".png";
-
-      if ((icon.name == "iTunesArtwork@2x") || (icon.name == "iTunesArtwork"))
-      {
-        // iTunesArtwork files don't have an extension
-        destFileName = icon.name;
-      }
-
-      doc.exportDocument(new File(destFolder + "/" + destFileName), ExportType.SAVEFORWEB, sfw);
-      doc.activeHistoryState = startState; // undo resize
-    }
-
-    alert("iOS Icons created!");
-  }
+for (var i=0,len=platformOptions.length;i<len;i++)  {
+    dlg.dropdownlist.add ('item', "" + platformOptions[i]);      
 }
-catch (exception)
-{
-  // Show degbug message and then quit
-	if ((exception != null) && (exception != ""))
-    alert(exception);
- }
-finally
-{
-    if (doc != null)
-        doc.close(SaveOptions.DONOTSAVECHANGES);
-  
-    app.preferences.rulerUnits = initialPrefs; // restore prefs
+
+var destPlatform = 0;
+dlg.dropdownlist.selection = dlg.dropdownlist.items[destPlatform];
+
+dlg.dropdownlist.onChange = function() { 
+   destPlatform = parseInt(this.selection);
+}
+
+dlg.center();
+var returnValue = dlg.show();
+
+if (returnValue == 1) {
+    alert(platformOptions[destPlatform]);
+
+    try {
+        // Prompt user to select an image file. Clicking "Cancel" returns null.
+        var iTunesArtwork = File.openDialog();
+
+        if (iTunesArtwork !== null) { 
+            var doc = open(iTunesArtwork);
+
+            if (doc == null) {
+                throw "Something is wrong with the file.  Make sure it's a valid PNG file.";
+            }
+
+            var startState = doc.activeHistoryState;       // save for undo
+            var initialPrefs = app.preferences.rulerUnits; // will restore at end
+            app.preferences.rulerUnits = Units.PIXELS;     // use pixels
+
+            if (doc.width != doc.height) {
+                throw "Image is not square";
+            }
+
+            // Folder selection dialog
+            var destFolder = Folder.selectDialog( "Choose an output folder");
+
+            if (destFolder == null) {
+                // User canceled, just exit
+                throw "";
+            }
+
+            // Save icons in PNG using Save for Web.
+            var sfw = new ExportOptionsSaveForWeb();
+            sfw.format = SaveDocumentType.PNG;
+            sfw.PNG8 = false; // use PNG-24
+            sfw.transparency = false;
+            doc.info = null;  // delete metadata
+
+            var icons;
+
+            // String check rather than using magic numbers
+            if (platformOptions[destPlatform] == "iOS App") {
+                icons = [
+                    {"name": "iTunesArtwork@2x", "size":1024},
+                    {"name": "iTunesArtwork",    "size":512},
+                    {"name": "Icon",             "size":57},
+                    {"name": "Icon@2x",          "size":114},
+                    {"name": "Icon-72",          "size":72},
+                    {"name": "Icon-72@2x",       "size":144},
+                    {"name": "Icon-Small",       "size":29},
+                    {"name": "Icon-Small@2x",    "size":58},
+                    {"name": "Icon-Small-50",    "size":50},
+                    {"name": "Icon-Small-50@2x", "size":100}
+                    ];
+            } else {
+                icons = [
+                    {"name": "icon_16x16",             "size":16},
+                    {"name": "icon_16x16@2x",          "size":32},
+                    {"name": "icon_32x32",             "size":32},
+                    {"name": "icon_32x32@2x",          "size":64},
+                    {"name": "icon_128x128",           "size":128},
+                    {"name": "icon_128x128@2x",        "size":256},
+                    {"name": "icon_256x256",           "size":256},
+                    {"name": "icon_256x256@2x",        "size":512},
+                    {"name": "icon_512x512",           "size":512},
+                    {"name": "icon_512x512@2x",        "size":1024},
+                ];
+            }
+
+            var icon;
+            for (i = 0; i < icons.length; i++) {
+                icon = icons[i];
+                doc.resizeImage(icon.size, icon.size, null, ResampleMethod.BICUBICSHARPER);
+
+                var destFileName = icon.name + ".png";
+
+                if ((icon.name == "iTunesArtwork@2x") || (icon.name == "iTunesArtwork")) {
+                    // iTunesArtwork files don't have an extension
+                    destFileName = icon.name;
+                }
+
+                doc.exportDocument(new File(destFolder + "/" + destFileName), ExportType.SAVEFORWEB, sfw);
+                doc.activeHistoryState = startState; // undo resize
+            }
+
+            alert(platformOptions[destPlatform] + " icons created!");
+        }
+    } catch (exception) {
+        // Show degbug message and then quit
+        if ((exception != null) && (exception != "")) {
+            alert(exception);
+        }
+    } finally {
+        if (doc != null) {
+            doc.close(SaveOptions.DONOTSAVECHANGES);
+        }
+
+        app.preferences.rulerUnits = initialPrefs; // restore prefs
+    }
 }
