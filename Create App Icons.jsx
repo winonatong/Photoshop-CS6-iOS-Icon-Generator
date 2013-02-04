@@ -119,6 +119,7 @@ if (returnValue == 1) {
 
             // String check rather than using magic numbers
             if (platformOptions[destPlatform] == "iOS App") {
+                sfw.transparency = false;
                 icons = [
                     {"name": "iTunesArtwork@2x", "size":1024},
                     {"name": "iTunesArtwork",    "size":512},
@@ -132,6 +133,7 @@ if (returnValue == 1) {
                     {"name": "Icon-Small-50@2x", "size":100}
                     ];
             } else {
+                sfw.transparency = true;
                 icons = [
                     {"name": "icon_16x16",             "size":16},
                     {"name": "icon_16x16@2x",          "size":32},
