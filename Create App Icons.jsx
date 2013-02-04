@@ -81,8 +81,6 @@ dlg.center();
 var returnValue = dlg.show();
 
 if (returnValue == 1) {
-    alert(platformOptions[destPlatform]);
-
     try {
         // Prompt user to select an image file. Clicking "Cancel" returns null.
         var iTunesArtwork = File.openDialog();
