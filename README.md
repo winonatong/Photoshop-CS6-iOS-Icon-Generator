@@ -33,6 +33,7 @@ http://developer.apple.com/library/ios/#documentation/iphone/conceptual/iphoneos
 
 Install - Save Create Icons.jsx to:
   Win: C:\Program Files\Adobe\Adobe Utilities\ExtendScript Toolkit CS5\SDK
+  
   Mac: /Applications/Adobe Photoshop CS6/Presets/Scripts
 * Restart Photoshop
 
