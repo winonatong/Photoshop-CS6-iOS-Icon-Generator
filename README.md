@@ -32,6 +32,7 @@ First, create at least a 1024x1024 px PNG file according to:
 http://developer.apple.com/library/ios/#documentation/iphone/conceptual/iphoneosprogrammingguide/BuildTimeConfiguration/BuildTimeConfiguration.html
 
 Install - Save Create Icons.jsx to:
+
   Win: C:\Program Files\Adobe\Adobe Utilities\ExtendScript Toolkit CS5\SDK
   
   Mac: /Applications/Adobe Photoshop CS6/Presets/Scripts
