@@ -8,7 +8,7 @@
 //
 // Copyright (c) 2010 Matt Di Pasquale
 // Added tweaks Copyright (c) 2012 by Josh Jones http://www.appsbynight.com
-//
+// Updated for iPhone 6 Plus Copyright (c) Winona Tong
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
@@ -61,10 +61,9 @@ dlg.cancelBtn = dlg.add('button', [255,40,375,63], 'Abort', {name:'cancel'});
 dlg.selectImgBtn = dlg.add('button', [255,13,375,35], 'Select an image*', {name:'ok'});
 
 var platformOptions = []; 
-platformOptions[0] = "iPhone App";
-platformOptions[1] = "iPad App";
-platformOptions[2] = "pre-iOS 6.1 iPhone App";
-platformOptions[3] = "Mac App"; 
+platformOptions[0] = "iOS App";
+platformOptions[1] = "pre-iOS 6.1 App";
+platformOptions[2] = "Mac App"; 
 
 dlg.dropdownlist = dlg.add("dropdownlist", [130,13,220,35]);
 
@@ -120,7 +119,7 @@ if (returnValue == 1) {
             var icons;
 
             // String check rather than using magic numbers
-            if (platformOptions[destPlatform] == "iPhone App") {
+            if (platformOptions[destPlatform] == "iOS App") {
                 sfw.transparency = false;
                 icons = [
                     {"name": "iTunesArtwork",    "size":512},
@@ -137,6 +136,19 @@ if (returnValue == 1) {
                     {"name": "Icon-Small@3x",    "size":87}
 
                     ];
+            } else if (platformOptions[destPlatform] == "pre-iOS 6.1 App") {   
+                sfw.transparency = false;
+                icons = [
+                    {"name": "Icon",             "size":57},
+                    {"name": "Icon@2x",          "size":114},
+                    {"name": "Icon-72",          "size":72},
+                    {"name": "Icon-72@2x",       "size":144},
+                    {"name": "Icon-Small",       "size":29},
+                    {"name": "Icon-Small@2x",    "size":58},
+                    {"name": "Icon-Small-50",    "size":50},
+                    {"name": "Icon-Small-50@2x", "size":100}
+                    ];
+                    
             } else {
                 sfw.transparency = true;
                 icons = [
