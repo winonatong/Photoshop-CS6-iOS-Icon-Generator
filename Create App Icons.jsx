@@ -124,7 +124,7 @@ if (returnValue == 1) {
                 icons = [
                     {"name": "iTunesArtwork",    "size":512},
                     {"name": "iTunesArtwork@2x", "size":1024},
-                    {"name": "Icon-60@2x",       "size":180},
+                    {"name": "Icon-60@2x",       "size":120},
                     {"name": "Icon-60@3x",       "size":180},
                     {"name": "Icon-76",          "size":76},
                     {"name": "Icon-76@2x",       "size":152},
