@@ -33,7 +33,7 @@
 //
 // Install - Save Create Icons.jsx to:
 //   Win: C:\Program Files\Adobe\Adobe Utilities\ExtendScript Toolkit CS5\SDK
-//   Mac: /Applications/Utilities/Adobe Utilities/ExtendScript Toolkit CS5/SDK
+//   Mac: /Applications/Adobe Photoshop CS6/Presets/Scripts
 // * Restart Photoshop
 //
 // Update:
@@ -140,6 +140,7 @@ if (returnValue == 1) {
                     {"name": "icon_32x32",             "size":32},
                     {"name": "icon_32x32@2x",          "size":64},
                     {"name": "icon_128x128",           "size":128},
+                    {"name": "icon_180x180",           "size":180},
                     {"name": "icon_128x128@2x",        "size":256},
                     {"name": "icon_256x256",           "size":256},
                     {"name": "icon_256x256@2x",        "size":512},
