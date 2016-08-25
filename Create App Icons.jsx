@@ -61,8 +61,10 @@ dlg.cancelBtn = dlg.add('button', [255,40,375,63], 'Abort', {name:'cancel'});
 dlg.selectImgBtn = dlg.add('button', [255,13,375,35], 'Select an image*', {name:'ok'});
 
 var platformOptions = []; 
-platformOptions[0] = "iOS App"; 
-platformOptions[1] = "Mac App"; 
+platformOptions[0] = "iPhone App";
+platformOptions[1] = "iPad App";
+platformOptions[2] = "pre-iOS 6.1 iPhone App";
+platformOptions[3] = "Mac App"; 
 
 dlg.dropdownlist = dlg.add("dropdownlist", [130,13,220,35]);
 
@@ -118,19 +120,22 @@ if (returnValue == 1) {
             var icons;
 
             // String check rather than using magic numbers
-            if (platformOptions[destPlatform] == "iOS App") {
+            if (platformOptions[destPlatform] == "iPhone App") {
                 sfw.transparency = false;
                 icons = [
-                    {"name": "iTunesArtwork@2x", "size":1024},
                     {"name": "iTunesArtwork",    "size":512},
-                    {"name": "Icon",             "size":57},
-                    {"name": "Icon@2x",          "size":114},
-                    {"name": "Icon-72",          "size":72},
-                    {"name": "Icon-72@2x",       "size":144},
+                    {"name": "iTunesArtwork@2x", "size":1024},
+                    {"name": "Icon-60@2x",       "size":180},
+                    {"name": "Icon-60@3x",       "size":180},
+                    {"name": "Icon-76",          "size":76},
+                    {"name": "Icon-76@2x",       "size":152},
+                    {"name": "Icon-Small-40",    "size":40},
+                    {"name": "Icon-Small-40@2x", "size":80},
+                    {"name": "Icon-Small-40@3x", "size":120},
                     {"name": "Icon-Small",       "size":29},
                     {"name": "Icon-Small@2x",    "size":58},
-                    {"name": "Icon-Small-50",    "size":50},
-                    {"name": "Icon-Small-50@2x", "size":100}
+                    {"name": "Icon-Small@3x",    "size":87}
+
                     ];
             } else {
                 sfw.transparency = true;
@@ -140,7 +145,6 @@ if (returnValue == 1) {
                     {"name": "icon_32x32",             "size":32},
                     {"name": "icon_32x32@2x",          "size":64},
                     {"name": "icon_128x128",           "size":128},
-                    {"name": "icon_180x180",           "size":180},
                     {"name": "icon_128x128@2x",        "size":256},
                     {"name": "icon_256x256",           "size":256},
                     {"name": "icon_256x256@2x",        "size":512},
